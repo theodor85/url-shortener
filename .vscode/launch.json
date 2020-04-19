@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // requires vscode extension: ms-python.python
+            "name": "Debug in docker container",
+            "type": "python",
+            "request": "attach",
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "/app"
+                }
+            ],
+            "port": 3000,
+            "host": "localhost",
+            "django": true,
+        }
+    ]
+}
