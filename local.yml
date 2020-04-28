@@ -1,8 +1,7 @@
 version: '3'
 
 volumes:
-  local_postgres_data: {}
-  local_postgres_data_backups: {}
+  mysql_data: {}
 
 services:
   django: &django
@@ -11,27 +10,31 @@ services:
       dockerfile: ./compose/local/django/Dockerfile
     image: great_url_shortener_local_django
     depends_on:
-      - postgres
+      - mysql
     volumes:
       - .:/app
     env_file:
       - ./.envs/.local/.django
-      - ./.envs/.local/.postgres
+      - ./.envs/.local/.mysql
     ports:
       - "8000:8000"
       - "3000:3000"
     command: /start
 
-  postgres:
-    build:
-      context: .
-      dockerfile: ./compose/production/postgres/Dockerfile
-    image: great_url_shortener_production_postgres
-    volumes:
-      - local_postgres_data:/var/lib/postgresql/data
-      - local_postgres_data_backups:/backups
+  mysql:
+    image: mysql:8
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
     env_file:
-      - ./.envs/.local/.postgres
+      - ./.envs/.local/.mysql
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
   redis:
     image: redis:5.0
@@ -41,7 +44,7 @@ services:
     image: great_url_shortener_local_celeryworker
     depends_on:
       - redis
-      - postgres
+      - mysql
       
     ports: []
     command: /start-celeryworker
@@ -51,7 +54,7 @@ services:
     image: great_url_shortener_local_celerybeat
     depends_on:
       - redis
-      - postgres
+      - mysql
       
     ports: []
     command: /start-celerybeat
