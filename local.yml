@@ -39,29 +39,40 @@ services:
   redis:
     image: redis:5.0
 
-  celeryworker:
-    <<: *django
-    image: great_url_shortener_local_celeryworker
-    depends_on:
-      - redis
-      - mysql
+  # celeryworker:
+  #   <<: *django
+  #   image: great_url_shortener_local_celeryworker
+  #   depends_on:
+  #     - redis
+  #     - mysql
       
-    ports: []
-    command: /start-celeryworker
+  #   ports: []
+  #   command: /start-celeryworker
 
-  celerybeat:
-    <<: *django
-    image: great_url_shortener_local_celerybeat
-    depends_on:
-      - redis
-      - mysql
+  # celerybeat:
+  #   <<: *django
+  #   image: great_url_shortener_local_celerybeat
+  #   depends_on:
+  #     - redis
+  #     - mysql
       
-    ports: []
-    command: /start-celerybeat
+  #   ports: []
+  #   command: /start-celerybeat
 
-  flower:
-    <<: *django
-    image: great_url_shortener_local_flower
+  # flower:
+  #   <<: *django
+  #   image: great_url_shortener_local_flower
+  #   ports:
+  #     - "5555:5555"
+  #   command: /start-flower
+
+  vue:
+    build:
+      context: .
+      dockerfile: ./compose/local/vue/Dockerfile
+    volumes:
+      - ./vue:/app
+    depends_on:
+      - django
     ports:
-      - "5555:5555"
-    command: /start-flower
+      - 5000:8080
