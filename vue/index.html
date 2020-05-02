@@ -3,6 +3,7 @@
 <head>
   <title>Vue.js Pet Depot</title>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vuejs-paginate@2.1.0"></script>
   <link rel="stylesheet" type="text/css" href="assets/css/app.css" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <meta charset="UTF-8">
@@ -29,41 +30,30 @@
       <hr>
       <label>Ваши URL-ы:</label>
       <div class="list-group">
-        <a href="http://0.0.0.0:8000/1gzRMI" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start">
+        <a v-for="url in urls" :href="url.short_url" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start">
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">http://0.0.0.0:8000/1gzRMI</h5>
+            <h5 class="mb-1">{{ url.short_url }}</h5>
             <small>3 days ago</small>
           </div>
-          <small>https://www.django-rest-framework.org/tutorial/2-requests-and-responses/#status-codes</small>
+          <small>{{ url.url }}</small>
         </a>
-        <a href="http://0.0.0.0:8000/FzjFxI" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">http://0.0.0.0:8000/FzjFxI</h5>
-              <small>3 days ago</small>
-            </div>
-            <small>https://stackoverrun.com/ru/q/8064923</small>
-          </a>
-          <a href="http://0.0.0.0:8000/QW-HOI" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">http://0.0.0.0:8000/QW-HOI</h5>
-              <small>3 days ago</small>
-            </div>
-            <small>https://app.slack.com/client/T02HV422M/C02HV4235/thread/C02HV4235-1580982888.142900</small>
-          </a>
       </div>
       <nav aria-label="Page navigation example" style="margin-top: 10;">
         <ul class="pagination">
           <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
+            <a class="page-link" href="#" @click="prevPage()" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
               <span class="sr-only">Previous</span>
             </a>
           </li>
+
+          <li v-for="p in this.paginatedData">{{p.first}}</li>
+
           <li class="page-item"><a class="page-link" href="#">1</a></li>
           <li class="page-item"><a class="page-link" href="#">2</a></li>
           <li class="page-item"><a class="page-link" href="#">3</a></li>
           <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
+            <a class="page-link" href="#" @click="nextPage()" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
               <span class="sr-only">Next</span>
             </a>
@@ -82,19 +72,57 @@
 </body>
 
 <script type="text/javascript">
+
   var APP_LOG_LIFECYCLE_EVENTS = false;
   var webstore = new Vue({
     el: '#app',
     data: {
-      sitename: "Vue.js Pet Depot",
-      product: {
-        id: 1001,
-        title: "Cat Food, 25lb bag",
-        description: "A 25 pound bag of <em>irresistible</em>," + " organic goodness for your cat.",
-        price: 2000,
-        image: "assets/images/product-fullsize.png",
+      pageNumber: 0,
+      methods:{
+        nextPage(){
+            this.pageNumber++;
+        },
+        prevPage(){
+            this.pageNumber--;
+        }
       },
+      computed: {
+        pageCount(){
+            let l = this.listData.length,
+            s = this.size;
+            return Math.ceil(l/s);
+        },
+        paginatedData(){
+            const start = this.pageNumber * this.size,
+            end = start + this.size;
+            return this.urls.slice(start, end);
+        },
+        size(){
+            return this.urls.length();
+        },
+      },
+
+      urls: [
+        {
+          "url": "https://www.django-rest-framework.org/tutorial/2-requests-and-responses/#status-codes",
+          "short_url": "http://0.0.0.0:8000/1gzRMI"
+        },
+        {
+          "url": "https://stackoverrun.com/ru/q/8064923",
+          "short_url": "http://0.0.0.0:8000/FzjFxI"
+        },
+        {
+          "url": "https://app.slack.com/client/T02HV422M/C02HV4235/thread/C02HV4235-1580982888.142900",
+          "short_url": "http://0.0.0.0:8000/QW-HOI"
+        },
+        {
+          "url": "https://app.slack.com/client/T02HV422M/C02HV4235/thread/C02HV4235-1580982888.142900",
+          "short_url": "http://0.0.0.0:8000/QW-HOI"
+        },
+        
+      ],
     },
+});
 
 </script>
 </body>
