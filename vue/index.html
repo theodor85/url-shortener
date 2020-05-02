@@ -3,8 +3,6 @@
 <head>
   <title>Vue.js Pet Depot</title>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://unpkg.com/vuejs-paginate@2.1.0"></script>
-  <link rel="stylesheet" type="text/css" href="assets/css/app.css" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <meta charset="UTF-8">
 </head>
@@ -26,18 +24,19 @@
         </div>
       </form>
     </div>
+
     <div style="margin-top: 50;">
       <hr>
       <label>Ваши URL-ы:</label>
+      <paginator title="Ghbdtn"></paginator>
       <div class="list-group">
-        <a v-for="url in urls" :href="url.short_url" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">{{ url.short_url }}</h5>
-            <small>3 days ago</small>
-          </div>
-          <small>{{ url.url }}</small>
-        </a>
+        <single_url v-for="url in urls"
+            :key="url.id"
+            :short_url="url.short_url"
+            :long_url="url.url"
+        ></single_url>
       </div>
+
       <nav aria-label="Page navigation example" style="margin-top: 10;">
         <ul class="pagination">
           <li class="page-item">
@@ -69,62 +68,7 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-</body>
-
-<script type="text/javascript">
-
-  var APP_LOG_LIFECYCLE_EVENTS = false;
-  var webstore = new Vue({
-    el: '#app',
-    data: {
-      pageNumber: 0,
-      methods:{
-        nextPage(){
-            this.pageNumber++;
-        },
-        prevPage(){
-            this.pageNumber--;
-        }
-      },
-      computed: {
-        pageCount(){
-            let l = this.listData.length,
-            s = this.size;
-            return Math.ceil(l/s);
-        },
-        paginatedData(){
-            const start = this.pageNumber * this.size,
-            end = start + this.size;
-            return this.urls.slice(start, end);
-        },
-        size(){
-            return this.urls.length();
-        },
-      },
-
-      urls: [
-        {
-          "url": "https://www.django-rest-framework.org/tutorial/2-requests-and-responses/#status-codes",
-          "short_url": "http://0.0.0.0:8000/1gzRMI"
-        },
-        {
-          "url": "https://stackoverrun.com/ru/q/8064923",
-          "short_url": "http://0.0.0.0:8000/FzjFxI"
-        },
-        {
-          "url": "https://app.slack.com/client/T02HV422M/C02HV4235/thread/C02HV4235-1580982888.142900",
-          "short_url": "http://0.0.0.0:8000/QW-HOI"
-        },
-        {
-          "url": "https://app.slack.com/client/T02HV422M/C02HV4235/thread/C02HV4235-1580982888.142900",
-          "short_url": "http://0.0.0.0:8000/QW-HOI"
-        },
-        
-      ],
-    },
-});
-
-</script>
+<script src="script.js"></script>
 </body>
 
 </html>
