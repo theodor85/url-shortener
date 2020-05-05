@@ -109,7 +109,7 @@ var webstore = new Vue({
 el: '#app',
 data: {
     pageNumber: 0,
-    pages_per_count: 3,
+    count_per_page: 3,
     methods:{
         nextPage(){
             this.pageNumber++;
