@@ -1,6 +1,8 @@
-FROM node:12.13.1
+FROM node:12.16.3
 
-RUN npm install -g live-server
+RUN npm install -g vue
+RUN npm install -g @vue/cli
 
-WORKDIR /app
-CMD live-server --no-browser --watch=/app
+WORKDIR /app/shortener
+
+CMD npm run serve 
