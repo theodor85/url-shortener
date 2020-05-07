@@ -46,13 +46,19 @@ export default {
   props: ['datalist', 'count_per_page'],
   components: {
     singleurl
-  },  
+  },
   data: function () {
     return {
-      size: this.datalist.length,
-      number_of_pages: Math.ceil(this.datalist.length / this.count_per_page),
       current_page: 1
     }
+  },
+  computed: {
+    size: function () {
+      return this.datalist.length
+    },
+    number_of_pages: function () {
+      return Math.ceil(this.datalist.length / this.count_per_page)
+    },
   },
   methods: {
     nextPage () {

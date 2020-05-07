@@ -43,46 +43,27 @@
 </template>
 <script>
 import paginator from './Paginator.vue'
+import axios from 'axios'
 
 export default {
   name: 'maincomponent',
   components: {
     paginator
   },
+  created () {
+    axios
+      .get('http://0.0.0.0:8000/')
+      .then(response => {
+        this.urls = response.data;
+        console.log(this.urls);
+      })
+      .catch(error => console.log(error));
+  },
   data: function () {
     return {
       pageNumber: 0,
       count_per_page: 3,
-      urls: [
-        {
-          url:
-            'https://www.django-rest-framework.org/tutorial/2-requests-and-responses/#status-codes',
-          short_url: 'http://0.0.0.0:8000/1gzRMI'
-        },
-        {
-          url: 'https://stackoverrun.com/ru/q/8064923',
-          short_url: 'http://0.0.0.0:8000/FzjFxI'
-        },
-        {
-          url:
-            'https://app.slack.com/client/T02HV422M/C02HV4235/thread/C02HV4235-1580982888.142900',
-          short_url: 'http://0.0.0.0:8000/QW-HOI'
-        },
-        {
-          url:
-            'https://www.django-rest-framework.org/tutorial/2-requests-and-responses/#status-codes',
-          short_url: 'http://0.0.0.0:8000/1gzRMI'
-        },
-        {
-          url: 'https://stackoverrun.com/ru/q/8064923',
-          short_url: 'http://0.0.0.0:8000/FzjFxI'
-        },
-        {
-          url:
-            'https://app.slack.com/client/T02HV422M/C02HV4235/thread/C02HV4235-1580982888.142900',
-          short_url: 'http://0.0.0.0:8000/QW-HOI'
-        },
-      ]
+      urls: [],
     }
   }
 }
