@@ -30,19 +30,15 @@ services:
     env_file:
       - ./.envs/.production/.postgres
 
-  traefik:
+  nginx:
     build:
       context: .
-      dockerfile: ./compose/production/traefik/Dockerfile
-    image: great_url_shortener_production_traefik
-    depends_on:
-      - django
+      dockerfile: ./compose/production/nginx/Dockerfile
     volumes:
-      - production_traefik:/etc/traefik/acme
+      - ./vue/shortener/dist:/usr/share/nginx/html
     ports:
       - "0.0.0.0:80:80"
       - "0.0.0.0:443:443"
-      - "0.0.0.0:5555:5555"
 
   redis:
     image: redis:5.0
