@@ -7,7 +7,7 @@ Great Url Shortener
 
 ```
 git clone https://github.com/theodor85/url-shortener.git
-cd redis-api
+cd url-shortener
 docker-compose -f local.yml up
 ```
 
