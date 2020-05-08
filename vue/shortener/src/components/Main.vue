@@ -10,14 +10,8 @@
               class="form-control"
               id="inputUrl"
               placeholder="Введите ваш длинный URL"
+              @change="onInputUrl($event)"
             />
-          </div>
-          <label for="shortUrl">Короткий URL:</label>
-          <div class="form-group row">
-            <label for="shortUrl" class="col-sm-2 col-form-label">http://domen/</label>
-            <div class="col-sm-10">
-              <input type="password" class="form-control" id="shortUrl" placeholder="Короткий URL" />
-            </div>
           </div>
         </form>
       </div>
@@ -55,7 +49,6 @@ export default {
       .get('http://0.0.0.0:8000/')
       .then(response => {
         this.urls = response.data;
-        console.log(this.urls);
       })
       .catch(error => console.log(error));
   },
@@ -65,7 +58,23 @@ export default {
       count_per_page: 3,
       urls: [],
     }
-  }
+  },
+  methods: {
+    onInputUrl: function (event) {
+      axios
+        .post('http://0.0.0.0:8000/shortener/', {
+          "origin_uri": event.target.value
+        })
+        .then(response => {
+          this.urls.unshift({
+              "url": response.data.origin_uri,
+              "short_url": response.data.short_url,
+          })
+        })
+        .catch(error => console.log(error));
+      event.target.value = ''
+    },
+  },
 }
 </script>
 <style>
